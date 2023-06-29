@@ -1,5 +1,5 @@
 .DS_Store
-
+.well-know
 application/cache/*
 !application/cache/index.html
 
