@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-controller="oficinaVirtual" ng-init="initFactura()" id="contenedorFactura">
+<div class="container-fluid" ng-controller="oficinaVirtual" ng-init="initAsociaMatricula()" id="contenedorFactura">
     <!-- modal estandar-->
     <div id="modalUsuarios" class="modal fade" role="dialog"  data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
@@ -40,68 +40,78 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulario de solicitud</h6>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-lg-12">
-                    A continuación complete los datos de su solicitud<br><br>
-                    <div class="alert alert-primary" role="alert">
-                        <strong>Atención</strong>
-                        <ul>
-                            <li> Si desea cambiar la matrícula actual por una nueva seleccione 'Cambiar Matricula Actual'.</li>
-                            <li> Si desea asociar una matrícula adicional selecccione 'Agregar Matricula'.</li>
-                        </ul>
+            <form method="post" id="formSolicitud" ng-submit="solicitudAsociarMatricula()">
+                <div class="row">
+                    <div class="col-lg-12">
+                        A continuación complete los datos de su solicitud<br><br>
+                        <div class="alert alert-primary" role="alert">
+                            <strong>Atención</strong>
+                            <ul>
+                                <li> Si desea cambiar la matrícula actual por una nueva seleccione 'Cambiar Matricula Actual'.</li>
+                                <li> Si desea asociar una matrícula adicional selecccione 'Agregar Matricula'.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12"><strong>Tipo de Solicitud</strong><br><br></div>
-                <div class="col-lg-2">
-                    <div class="form-group">    
-                        <label >
-                            <input type="radio" name="tipoSolicitud">
-                            Agregar Matricula
-                        </label>
+                <div class="row">
+                    <div class="col-lg-12"><strong>Tipo de Solicitud</strong><br><br></div>
+                    <div class="col-lg-2">
+                        <div class="form-group">    
+                            <label >
+                                <input type="radio" name="tipoSolicitud" value="agregar" ng-click="decideMatricula()">
+                                Agregar Matricula
+                            </label>
+                        </div>    
                     </div>    
-                </div>    
-                <div class="col-lg-2">
-                    <div class="form-group">    
-                        <label >
-                            <input type="radio" name="tipoSolicitud">
-                            Cambiar Matricula Actual
-                        </label>
+                    <div class="col-lg-2">
+                        <div class="form-group">    
+                            <label >
+                                <input type="radio" name="tipoSolicitud" value="cambio" ng-click="decideMatricula()">
+                                Cambiar Matricula Actual
+                            </label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="form-group">    
-                        <label>Correo electrónico</label>
-                        <input type="text" class="form-control" name="email" id="email" readonly value="<?php echo $_SESSION['project']['info']['email']?>">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="form-group">    
+                            <label>Correo electrónico</label>
+                            <input type="text" class="form-control" name="email" id="email" readonly value="<?php echo $_SESSION['project']['info']['email']?>">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">    
+                            <label>Teléfono</label>
+                            <input type="text" class="form-control" name="telefono" id="telefono">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">    
+                            <label>Nueva matrícula</label>
+                            <input type="text" class="form-control" name="matricula" id="matricula">
+                        </div>
+                    </div>
+                    <?php if(isset($_SESSION['matricula'])){?>
+                        <div class="col-lg-3">
+                            <div class="form-group">    
+                                <label>Matrícula Actual <span class="badge badge-danger" style="display:none" id="alertaMatricula" title="Si esta no es la matrícula que desea cambiar, seleccione otra en la parte superior">Esta matrícula cambiará</span></label>
+                                <h2><?php echo $_SESSION['matricula']?></h2>
+                            </div>
+                        </div>
+                    <?php }?>
+                    <div class="col-lg-12">
+                        <div class="form-group">    
+                            <label>Observación</label>
+                            <textarea type="text" class="form-control" name="observacion" id="observacion"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 text-right">
+                        <div class="form-group">    
+                        <input type="submit" value="ENVIAR SOLICITUD" class="btn btn-primary">
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="form-group">    
-                        <label>Teléfono</label>
-                        <input type="text" class="form-control" name="telefono" id="telefono">
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">    
-                        <label>Matrícula</label>
-                        <input type="text" class="form-control" name="matricula" id="matricula">
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form-group">    
-                        <label>Observación</label>
-                        <textarea type="text" class="form-control" name="observacion" id="observacion"></textarea>
-                    </div>
-                </div>
-                <div class="col-lg-12 text-right">
-                    <div class="form-group">    
-                       <input type="submit" value="ENVIAR SOLICITUD" class="btn btn-primary">
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 

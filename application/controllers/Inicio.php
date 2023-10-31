@@ -17,6 +17,7 @@ class Inicio extends CI_Controller
     {
         parent::__construct();
         $this->load->model("general/LogicaGeneral", "logica");
+        $this->load->model("oficinaVirtual/LogicaOficinaVirtual", "logicaOv");
        	$this->load->helper('language');
     	$this->lang->load('spanish');
     }
@@ -43,8 +44,25 @@ class Inicio extends CI_Controller
 	}
 	public function cabeza()
 	{
-		$salida['opc']    	  = "";
-		$salida['modulos']    = $this->logica->getModulos(1);
+		$listaMatriculas = $this->logicaOv->getMatriculasUsuario($_SESSION['project']['info']['idPersona']);
+		$escribeMatricula = 0;
+		//debo validar el perfil para saber que matrículas debo mostrar.
+		if(in_array($_SESSION['project']['info']['idPerfil'],array(3,4))){
+			if(count($listaMatriculas['datos']) > 0 ){
+				if(!isset($_SESSION['matricula']))
+				{
+					$_SESSION['matricula'] = $listaMatriculas['datos'][0]['matricula'];
+				}
+			}
+			$escribeMatricula = 0;
+		}
+		else{//administradores
+			$escribeMatricula = 1;
+		}
+		$salida['escribeMatricula']    	  = $escribeMatricula;
+		$salida['opc']    	  			  = "";
+		$salida['matriculas']  			  = $listaMatriculas['datos'];
+		$salida['modulos']    			  = $this->logica->getModulos(1);
 		echo $this->load->view("app/menu",$salida,true);
 	}
 }

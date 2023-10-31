@@ -464,6 +464,7 @@ function insertaArchivosControlesAngularJS()
     $script .=   '<script type="text/javascript" src="'.base_url().'res/js/listas/controller.js?'.rand(1,10000).'"></script>';;
     $script .=   '<script type="text/javascript" src="'.base_url().'res/js/perfilUsuario/controller.js?'.rand(1,10000).'"></script>';
     $script .=   '<script type="text/javascript" src="'.base_url().'res/js/administrativos/cargaPagos/controller.js?'.rand(1,10000).'"></script>';
+    $script .=   '<script type="text/javascript" src="'.base_url().'res/js/oficinaVirtual/controller.js?'.rand(1,10000).'"></script>';
 
     return $script;
 }
@@ -548,6 +549,52 @@ function sendNotifi($idPersona,$mensaje,$titulo)
     }*/
 
 }
+function getTokenAPI(){
+    // Datos a enviar
+    $data = array("Username" => USUARIO_API, //@see config/constantes.php
+                  "Password" => CLAVE_API, //@see config/constantes.php
+                  "IdEmpresa"=> ID_EMPRESA_API, //@see config/constantes.php
+                  "Aplicacion"=> APLICACION_API, //@see config/constantes.php
+                  "NombreEquipo" => NOMBRE_EQUIPO_API); //@see config/constantes.php
+    $data_string = json_encode($data);
+    // Inicializar cURL
+    $ch = curl_init(URL_API.'login/CrearSesion');
+    // Configurar la solicitud POST
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // Configurar las cabeceras HTTP (es importante configurar 'Content-Type' como 'application/json')
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen($data_string))
+    );
+    // Ejecutar la solicitud
+    $result = curl_exec($ch);
+    // Mostrar el resultado
+    return json_decode($result,true);
+}
+
+function consultaApiAfro($data,$endPoint,$token){
+    // Datos a enviar
+    $data_string = json_encode($data);
+    // Inicializar cURL
+    $ch = curl_init(URL_API.$endPoint);
+    // Configurar la solicitud POST
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // Configurar las cabeceras HTTP (es importante configurar 'Content-Type' como 'application/json')
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Authorization: Bearer ' . $token,
+        'Content-Length: ' . strlen($data_string))
+    );
+    // Ejecutar la solicitud
+    $result = curl_exec($ch);
+    // Mostrar el resultado
+    return json_decode($result,true);
+}
+
 
 /**
  * Mostrar el contenido del parametro $data dentro de la etiqueta pre

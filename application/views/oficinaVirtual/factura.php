@@ -10,7 +10,7 @@
     <!-- cabecera de la plantilla-->
     <h1 class="h3 mb-4 text-gray-800">
         <?php echo $infoModulo['nombreModulo'] ?> - Estado de cuenta
-                <a class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="<?php echo base_url()?>OficinaVirtual/descargarFactura/<?php echo $infoFacturaCargada['vigencia']?>" class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm " target="_bank">
                     <i class="fa fa-download"></i> Descargar factura
                 </a>
         <!-- <?php if(getPrivilegios()[0]['crear'] == 1){ ?>
@@ -45,14 +45,14 @@
                     <strong>Matricula</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    12345
+                    <?php echo $infoFacturaCargada['matricula']?>
                 </div>
 
                 <div class="col-lg-3 text-left">
                     <strong>Suscriptor</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    AFROCAUCANA DE AGUAS ESP
+                    <?php echo $infoFacturaCargada['nombreSuscriptor']?>
                 </div>
             </div>
             
@@ -61,14 +61,14 @@
                     <strong>Direccion</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    CL 10 26 91 - EL REPOSO
+                    <?php echo $infoFacturaCargada['direccion']?>
                 </div>
 
                 <div class="col-lg-3 text-left">
                     <strong>Ciudad</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                HONDA
+                    <?php echo $infoFacturaCargada['nombreCiudad']?>
                 </div>
             </div>
             
@@ -77,14 +77,14 @@
                     <strong>Factura</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    674530
+                    <?php echo $infoFacturaCargada['numeroFactura']?>
                 </div>
 
                 <div class="col-lg-3 text-left">
                     <strong>Fecha de Vencimiento</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    2023-06-15
+                    <?php echo date("Y-m-d",strtotime($infoFacturaCargada['fecVen1']))?>
                 </div>
             </div>
             
@@ -93,14 +93,14 @@
                     <strong>Periodo Consumo	</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    01 may. 2023 al 31 may. 2023
+                    <?php echo $infoFacturaCargada['periodoDeConsumo']?>
                 </div>
 
                 <div class="col-lg-3 text-left">
                     <strong>Facturas Adeudadas</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    1
+                    <?php echo $infoFacturaCargada['facturasAdeudadas']?>
                 </div>
             </div>
             
@@ -109,14 +109,14 @@
                     <strong>Lectura Anterior</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    1493
+                    <?php echo $infoFacturaCargada['lecturaAnterior']?>
                 </div>
 
                 <div class="col-lg-3 text-left">
                     <strong>Lectura Actual</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    1507
+                    <?php echo $infoFacturaCargada['lecturaActual']?>
                 </div>
             </div>
             
@@ -125,14 +125,14 @@
                     <strong>Valor Deuda	</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    $0	
+                    $<?php echo $infoFacturaCargada['valorMora']?>
                 </div>
 
                 <div class="col-lg-3 text-left">
                     <strong>Valor Financiado</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    $0	
+                    $<?php echo $infoFacturaCargada['valorFinanciado']?>	
                 </div>
             </div>
             
@@ -141,14 +141,15 @@
                     <strong>Valor Mes</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    $0	
+                    $<?php echo $infoFacturaCargada['valorCorriente']?>	
+                    	
                 </div>
 
                 <div class="col-lg-3 text-left">
                     <strong>Total a Pagar</strong>
                 </div>
                 <div class="col-lg-3 text-left">
-                    $0	
+                    $<?php echo $infoFacturaCargada['totalAPagar']?>	
                 </div>
             </div>
         </div>

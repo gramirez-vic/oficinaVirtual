@@ -184,31 +184,44 @@ class LogicaLogin  {
     */
     public function procesoPersonas($dataLogin)
     {
-        //lo primero que valido es si el usuario está activo o no
-        if($dataLogin['estado'] == 1)//estado
+        //debo consultar el api para traer el token
+        $dataApi = getTokenAPI();
+        //var_dump($dataApi);die();
+        if($dataApi['seValido'] == true)
         {
-            //die("asd");
-            //si todo ha salido bien simplemente consulto la información de la empresa y envio al usuario al home de la plataforma
-                $whereInfoEmpresa['idPersona'] = $dataLogin['idGeneral'];
-                $infoEmpresa =  $this->ci->dbGeneral->getInfoPersonas($whereInfoEmpresa);
-                //levanto la famosa sessión project con 3 posiciones importantes para dejarlo todo ordenado
-                //info
-                //login
-                //esta variable permite el acceso a todo el sistema
-                $_SESSION['project']['info']  = $infoEmpresa[0];
-                $_SESSION['project']['login'] = $dataLogin;
-                auditoria("INICIODESESION","Ha ingresado al sistema el usuario ".$infoEmpresa[0]['nombre']." ".$infoEmpresa[0]['apellido']." | ".$infoEmpresa[0]['idPersona']);
-                $respuesta = array("mensaje"=>"Bienvenido al sistema usuario",
-                                   "continuar"=>1,
-                                   "zona"=>2,
-                                   "datos"=>""); 
+            //lo primero que valido es si el usuario está activo o no
+            if($dataLogin['estado'] == 1)//estado
+            {
+                //die("asd");
+                //si todo ha salido bien simplemente consulto la información de la empresa y envio al usuario al home de la plataforma
+                    $whereInfoEmpresa['idPersona'] = $dataLogin['idGeneral'];
+                    $infoEmpresa =  $this->ci->dbGeneral->getInfoPersonas($whereInfoEmpresa);
+                    //levanto la famosa sessión project con 3 posiciones importantes para dejarlo todo ordenado
+                    //info
+                    //login
+                    //esta variable permite el acceso a todo el sistema
+                    $_SESSION['project']['info']  = $infoEmpresa[0];
+                    $_SESSION['project']['login'] = $dataLogin;
+                    $_SESSION['project']['api']   = $dataApi['sesion'];
+                    auditoria("INICIODESESION","Ha ingresado al sistema el usuario ".$infoEmpresa[0]['nombre']." ".$infoEmpresa[0]['apellido']." | ".$infoEmpresa[0]['idPersona']);
+                    $respuesta = array("mensaje"=>"Bienvenido al sistema usuario",
+                                    "continuar"=>1,
+                                    "zona"=>2,
+                                    "datos"=>""); 
+            }
+            else
+            {
+                $respuesta = array("mensaje"=>"Parece que su usuario está inactivo, por favor intente de nuevo, si el problema persiste pongase en contacto con soporte técnico.",
+                                    "continuar"=>0,
+                                    "zona"=>0,
+                                    "datos"=>""); 
+            }
         }
-        else
-        {
-            $respuesta = array("mensaje"=>"Parece que su usuario está inactivo, por favor intente de nuevo, si el problema persiste pongase en contacto con soporte técnico.",
-                                  "continuar"=>0,
-                                  "zona"=>0,
-                                  "datos"=>""); 
+        else{
+            $respuesta = array("mensaje"=>"No ha sido posible la conexión con el API de servicios. Por favor intente de nuevo más tarde.",
+                                "continuar"=>0,
+                                "zona"=>0,
+                                "datos"=>""); 
         }
         return $respuesta;
     }

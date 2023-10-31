@@ -40,6 +40,7 @@ class Login extends CI_Controller
         auditoria("CIERREDESESION","Ha salido del sistema el usuario ".$_SESSION['project']['info']['nombre']." ".$_SESSION['project']['info']['apellido']." | ".$_SESSION['project']['info']['idPersona']);
 		unset($_SESSION['project']);
 		unset($_SESSION['pago']);
+		unset($_SESSION['matricula']);
 		header('Location:'.base_url()."login");
 	}
 	public function login()

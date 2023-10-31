@@ -145,7 +145,9 @@
             elemento.removeAttr('style');
             //oculta elemnto
             $('#field_estado_chosen').hide();
-            $('table').DataTable();
+            setTimeout(function(){
+                $('table').DataTable();
+            },500)
         });
     </script>
 

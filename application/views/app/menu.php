@@ -36,7 +36,7 @@
         <span><?php echo ucwords(mb_strtolower($modMenu['nombreModulo']))?></span>
     </a>
     <?php if(count($modMenu['modulos']) > 0){ ?>
-        <div id="modulo<?php echo $modMenu['idPadre']?>" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="modulo<?php echo $modMenu['idPadre']?>" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Módulos:</h6>
                 <?php foreach($modMenu['modulos'] as $hijos){ ?>
@@ -67,7 +67,7 @@
 <!-- End of Sidebar -->
 
 <!-- Content Wrapper -->
-<div id="content-wrapper" class="d-flex flex-column">
+<div id="content-wrapper" class="d-flex flex-column" ng-controller="oficinaVirtual">
 
 <!-- Main Content -->
 <div id="content">
@@ -84,26 +84,32 @@
         <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <?php if($_SESSION['project']['info']['idPerfil'] == 2 or $_SESSION['project']['info']['idPerfil'] == 1){?>
                 <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Cargar matrícula..."
-                        aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Cargar matrícula..." aria-label="Search" aria-describedby="basic-addon2" id="matriculaCargar" name="matriculaCargar">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">
+                        <button class="btn btn-primary" type="button" ng-click="cargarMatricula()">
                             <strong>CARGAR</strong>
                         </button>
                     </div>
                 </div>
             <?php }else if($_SESSION['project']['info']['idPerfil'] == 3 or $_SESSION['project']['info']['idPerfil'] == 4){?>
-                <div class="input-group">
-                    <select class="form-control bg-light border-0 small">
-                        <option value="">112233</option>
-                    </select>
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <strong>CARGAR</strong>
-                            </button>
-                        </div>
-                </div>
+                <?php if(count($matriculas) > 0){?>
+                    <div class="input-group">
+                        <select class="form-control bg-light border-0 small" id="matriculaCargar" name="matriculaCargar">
+                            <?php foreach($matriculas as $mat){?>
+                                <option value="<?php echo $mat['matricula']?>" <?php if($mat['matricula'] == $_SESSION['matricula']){?>selected<?php }?> ><?php echo $mat['matricula']?></option>
+                            <?php }?>
+                        </select>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" ng-click="cargarMatricula()">
+                                    <strong>CARGAR</strong>
+                                </button>
+                            </div>
+                    </div>
+                <?php }else{?>
+                    No hay matrículas relacionadas
+                <?php }?>
             <?php }?>
+            
         </form>
 
         <!-- Topbar Navbar -->
@@ -245,13 +251,18 @@
                     <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                 </div>
             </li> -->
-
+            <?php if(isset($_SESSION['matricula'])){?>
+                <li>
+                    <h5  style="padding-top:24px !important">
+                        Matrícula: <?php echo $_SESSION['matricula']?>
+                    </h5>
+                </li>
+            <?php }?>
             <div class="topbar-divider d-none d-sm-block"></div>
-
+                    
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['project']['info']['nombre'] ?>  <?php echo $_SESSION['project']['info']['apellido'] ?></span>
                     <!-- <img class="img-profile rounded-circle" src="<?php echo base_url()?>res/fotos/personas/<?php echo $_SESSION['project']['info']['idPersona']?>/<?php echo $_SESSION['project']['info']['icono']?>"> -->
                     <i class="fa fa-user"></i>
