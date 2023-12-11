@@ -20,6 +20,7 @@ class BaseDatosGral extends CI_Model {
     private $tableInfoPago               =   "";
     private $tableEmpresas               =   "";
     private $tablePersonas               =   "";
+    private $tablePagofacturas           =   "";
     public function __construct() 
     {
         parent::__construct();
@@ -54,6 +55,7 @@ class BaseDatosGral extends CI_Model {
         $this->tableRelCieDiez           = "app_rel_visitas_ciediez";
         $this->tableVariablesGlobales    = "app_variablesglobales";
         $this->tableMatriculas           = "app_matriculas";
+        $this->tablePagofacturas         = "app_pago_facturas";
     }
     public function getVariablesGlobales()
     {
@@ -397,6 +399,26 @@ class BaseDatosGral extends CI_Model {
         //print_r($this->db->last_query());die();
         return $id->result_array();
 
+    }
+    public function insetCodigo($dataInserta){
+        $this->db->insert($this->tablePagofacturas,$dataInserta);
+        //print_r($this->db->last_query());die();
+        return $this->db->insert_id();
+    }
+    public function getInfopedido($where){
+        $this->db->select("*");
+        $this->db->where($where);
+        $this->db->from($this->tablePagofacturas);
+        $id = $this->db->get();
+        //print_r($this->db->last_query());die();
+        return $id->result_array();
+    }
+    public function getMatriculas(){
+        $this->db->select("*");
+        $this->db->from($this->tablePagofacturas);
+        $id = $this->db->get();
+       //print_r($this->db->last_query());die();
+        return $id->result_array();
     }
 }
 
