@@ -44,23 +44,36 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>FECHA</th>
                             <th>FACTURA</th>
-                            <th>VIGENCIA</th>
+                            <th>CODIGO PAGO</th>
+                            <th>MATRICULA</th>
                             <th>RECAUDADOR</th>
+                            <th>ESTADO PAGO</th>
                             <th>VALOR</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($historicoPagos as $historico){ ?>
+                        <?php foreach($PagosOficina as $historico){ ?>
                         <tr>
-                            <td><?php echo $historico["idPago"]?></td>  
                             <td><?php echo $historico["fechaPago"]?></td>  
-                            <td><?php echo $historico["numeroFactura"]?></td>  
-                            <td><?php echo $historico["vigencia"]?></td>  
-                            <td><?php echo $historico["nombreRecaudador"]?></td>  
-                            <td><?php echo "$ ".number_format($historico["valorPago"], 0, ',', '.');?></td> 			 
+                            <td><?php echo $historico["factura"]?></td>  
+                            <td><?php echo $historico["codigoPago"]?></td>  
+                            <td><?php echo $historico["matricula"]?></td>  
+                            <td><?php echo $historico["entidad"]?></td>  
+                            <td>
+                                <?php if($historico["estadoPago"] == 0){
+                                    echo "INICIADO";
+                                }else if($historico["estadoPago"] == 1){
+                                    echo "DECLINADO";
+                                }else if($historico["estadoPago"] == 2){
+                                    echo "ERROR DE PAGO";
+                                }else if($historico["estadoPago"] == 3){
+                                    echo "APROVADO";
+                                }   
+                                ?>
+                            </td>  
+                            <td><?php echo "$ ".number_format($historico["valor"], 0, ',', '.');?></td> 			 
                         </tr>
                         <?php }?>
                     </tbody>

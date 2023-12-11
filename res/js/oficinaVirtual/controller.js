@@ -121,4 +121,50 @@ project.controller('oficinaVirtual', function($scope,$http,$q,constantes)
             });
         });
     }
+    $scope.solicitudConsultarMatricula = function(){
+        var matricula = $("#matricula").val();
+        var controlador = $scope.config.apiUrl+"OficinaVirtual/consultaMatricula";
+        var parametros  = {matricula};
+        constantes.consultaApi(controlador,parametros,function(json){
+            if(json != ""){
+                // Redirigir a la nueva ubicación
+                window.location.assign($scope.config.apiUrl + "/OficinaVirtual/datosFactura/41/" + matricula);
+            } else {
+                constantes.alerta("Atención", "Matricula Incorrecta, por favor verifique", "info", function(){});
+            }
+        });
+    }
+    $scope.PagoFactura= function(){
+		constantes.confirmacion("Atención","Esta apunto de realizar el pago de tu factura, ¿Desea continuar?. Recuerde activar las ventanas emergentes antes de continuar.",'info',function(){
+			//se abre ventana pop
+			var codigo = $("#codigoPago").val();
+            var controlador = $scope.config.apiUrl+"OficinaVirtual/insetCodigo";
+            var parametros  = $("#dataPago").serialize();
+            constantes.consultaApi(controlador,parametros,function(json){
+                if(json.continuar == 1){	
+                    var ventana ="";
+                    var ventana = window.open($scope.config.apiUrl+"OficinaVirtual"+'/procesoPagoOnline/'+"datos"+'/PagoFactura/'+json.datos, "wompi" , "width=600,height=880,left = 420");
+                    var tiempo= 0;
+                        var interval = setInterval(function(){
+                            //Comprobamos que la ventana no este cerrada
+                            if(ventana.closed !== false) {
+                                window.clearInterval(interval);
+                                window.location.assign($scope.config.apiUrl+"App"); 
+                            } else {
+                                o +=1;
+                            }
+                        },1000)
+                }else{
+                constantes.alerta("Atención",json.mensaje,"error",function(){})
+                }
+            });
+		});
+	}
+    $scope.nuevaPqr = function(){
+        window.location.assign($scope.config.apiUrl + "/OficinaVirtual/nuevaPqrs/41");
+    }
+    $scope.crearPQR = function(){
+        alert("aca");
+    }
+    
 });

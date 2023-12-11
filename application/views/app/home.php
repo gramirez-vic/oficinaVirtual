@@ -59,7 +59,7 @@
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                         Consulta tus PQRs o Radica una nueva</div>
                         <a href="<?php echo base_url('OficinaVirtual/pqrs/43')?>" class="btn btn-primary"><i class="fa fa-list"></i> Mis PQRS</a>
-                        <a href="<?php echo base_url('OficinaVirtual/pqrs/43')?>" class="btn btn-success"><i class="fa fa-list"></i> Enviar PQR</a>
+                        <a href="<?php echo base_url('OficinaVirtual/nuevaPqrs/43')?>" class="btn btn-success"><i class="fa fa-list"></i> Enviar PQR</a>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>

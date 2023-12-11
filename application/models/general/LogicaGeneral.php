@@ -264,4 +264,33 @@ class LogicaGeneral  {
         //var_dump($salidaPerf);
         return $salidaPerf;
     }
+    //inserta codigo
+    public function insetCodigo($codigoPago,$email,$datos){
+        $dataInserta['email']           = $email;
+        $dataInserta['ip']              = getIP();
+        $dataInserta['estadoPago']      = 0;
+        $dataInserta['valor']           = $datos["totalAPagar"];
+        $dataInserta['codigoPago']      = $codigoPago."-".$datos["numeroFactura"];
+        $dataInserta['fechaPago']       = date('Y-m-d H:m:s');
+        $dataInserta['factura']         = $datos["numeroFactura"];
+        $dataInserta['matricula']       = $datos["matricula"];
+        $dataInserta['ENTIDAD']         = "Wompi";
+        $resultado = $this->ci->dbGeneral->insetCodigo($dataInserta);
+        $respuesta = array("mensaje"=>"data insert",
+                            "continuar"=>1,
+                            "datos"=>$resultado);   
+        return $respuesta;
+    }
+    //consulto registro registrado, para iniciar el pago
+    public function getInfopedido($pedido){ 
+        $where['idPago'] = $pedido;
+        $resultado          = $this->ci->dbGeneral->getInfopedido($where);
+        //var_dump($resultado);
+        return $resultado; 
+    }
+    public function getMatriculas(){ 
+        $resultado          = $this->ci->dbGeneral->getMatriculas();
+        //var_dump($resultado);
+        return $resultado; 
+    }
  }

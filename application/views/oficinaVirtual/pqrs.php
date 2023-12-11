@@ -10,7 +10,7 @@
     <!-- cabecera de la plantilla-->
     <h1 class="h3 mb-4 text-gray-800">
         <?php echo $infoModulo['nombreModulo'] ?>
-                <a class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class=" d-sm-inline-block btn btn-sm btn-primary shadow-sm" ng-click="nuevaPqr()" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-plus"></i> Nueva PQR
                 </a>
         <!-- <?php if(getPrivilegios()[0]['crear'] == 1){ ?>
@@ -37,7 +37,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Listado de pagos</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Listado de Pqrs</h6>
         </div>
         <div class="card-body">
             <div class="table-reponsive">
