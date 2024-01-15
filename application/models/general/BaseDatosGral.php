@@ -21,6 +21,8 @@ class BaseDatosGral extends CI_Model {
     private $tableEmpresas               =   "";
     private $tablePersonas               =   "";
     private $tablePagofacturas           =   "";
+    private $tableMatriculas             =   "";
+    private $tablePerfiles               =   "";
     public function __construct() 
     {
         parent::__construct();
@@ -56,6 +58,7 @@ class BaseDatosGral extends CI_Model {
         $this->tableVariablesGlobales    = "app_variablesglobales";
         $this->tableMatriculas           = "app_matriculas";
         $this->tablePagofacturas         = "app_pago_facturas";
+        $this->tableMatriculas           = "app_matriculas";
     }
     public function getVariablesGlobales()
     {
@@ -418,6 +421,24 @@ class BaseDatosGral extends CI_Model {
         $this->db->from($this->tablePagofacturas);
         $id = $this->db->get();
        //print_r($this->db->last_query());die();
+        return $id->result_array();
+    }
+    public function actualizaPago($dataInserta,$where){
+        $this->db->where($where);
+        $this->db->update($this->tablePagofacturas,$dataInserta);
+        //print_r($this->db->last_query());die();
+        return $this->db->insert_id();
+
+    }
+    public function datos($where)
+    {
+        $this->db->select("*");
+        $this->db->where($where);
+        $this->db->from($this->tablePersonas." p");
+        $this->db->join($this->tableMatriculas." m"," m.idPersona=p.idPersona","INNER");
+        $this->db->join($this->tablePerfiles." f"," f.idPerfil=p.idPerfil","INNER");
+        $id = $this->db->get();
+        // print_r($this->db->last_query());die();
         return $id->result_array();
     }
 }

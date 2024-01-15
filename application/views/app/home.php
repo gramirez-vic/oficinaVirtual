@@ -40,6 +40,7 @@
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                         Consulta el histórico de pagos</div>
                         <a href="<?php echo base_url('OficinaVirtual/historicoPagos/42')?>" class="btn btn-primary"><i class="fa fa-list"></i> Ver pagos</a>
+                        <a href="<?php echo base_url('OficinaVirtual/PagarFactura/48')?>" class="btn btn-success"><i class="fa fa-list"></i> Realizar pagos</a>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>

@@ -293,4 +293,12 @@ class LogicaGeneral  {
         //var_dump($resultado);
         return $resultado; 
     }
+    public function actualizaPago($data,$where){
+        $actualizaPago = $this->ci->dbGeneral->actualizaPago($data,$where);
+    }
+    public function datos($idPersona){
+        $data["p.idPersona"] = $idPersona;
+        $resultado = $this->ci->dbGeneral->datos($data);
+        return $resultado;
+    }
  }

@@ -350,10 +350,12 @@ class OficinaVirtual extends CI_Controller {
     }
 	//link de confirmacion de pago wompi
 	public function confirmacionPagoWompi(){
-        
+    
+        extract($_POST);
+		var_dump($_POST["id"]);die();
         extract($_SESSION['confirmaWompi']);
         //var_dump($_POST);die();reference_sale
-        extract($_POST);
+        //extract($_POST);
         //debo actualizar la informacon del pedido con lo que me retorno payu
         $dataInserta['estadoPago']      = $state_pol;
         $dataInserta['transactionId']   = $transaction_id;
@@ -362,12 +364,12 @@ class OficinaVirtual extends CI_Controller {
         $dataInserta['moneda']          = $currency;
         $dataInserta['entidad']         = $payment_method;
         $dataInserta['fechaPago']       = date("Y-m-d H:i:s");
-        $condicion['codigoPedido']      = $codigoPedido;
-        var_dump($_SESSION['confirmaWompi']);
-        $infoPedido     = $this->logicaPedidos->getPedidos(array("codigoPedido"=>$codigoPedido));
+        $condicion['codigoPago']      	= $codigoPedido;
+        
+        $infoPedido     = $this->logica->getInfopedido(array("codigoPago"=>$codigoPago));
         $infoTienda     = $this->logica->getInfoTiendaNew($infoPedido[0]['tienda']);
         
-        $updatePedido                   = $this->logica->actualizaPedido($dataInserta,$condicion);
+        $updatePedido                   = $this->logica->actualizaPago($dataInserta,$condicion);
         //envia el mensaje al administrador de la tienda diciendo que el pedido llego
         //$mensajeMail  = "Confirmación de pago del pedido <strong>".$reference_sale."</strong><br><br>";
        // sendMail(_ADMIN_PEDIDOS,"Estado de pago del pedido ".$reference_sale,$mensajeMail);
@@ -385,14 +387,13 @@ class OficinaVirtual extends CI_Controller {
         $salida['pseBank']          =   $payment_method;
         $salida['lapPaymentMethod'] =   $payment_method;
         $salida['transactionId']    =   $transaction_id;
-        $salida['valor']    =   $value;
+        $salida['valor']    		=   $value;
 
 
         $salida['titulo']      = "Respuesta de pago";
         $salida['titulo']      = lang("titulo")." - Resumen de la transacción";
         $salida['centro']      = "pedidos/respuestaPagoAppWompi";
         $salida['claseLabel']   = $claseLabel;
-        $salida['infoTienda']   = $infoTienda['datos'][0];
         
 		$this->load->view("registro/indexPago",$salida);
     }
@@ -469,6 +470,41 @@ class OficinaVirtual extends CI_Controller {
 				$salida['tiposInstalacion']  		= $datosBasicosPqrs["datos"]["tiposInstalacion"];
 				$salida['diametrosConexion']  		= $datosBasicosPqrs["datos"]["diametrosConexion"];
 				$salida['codigoConceptoSolicitudServicio'] = $datosBasicosPqrs["datos"]["codigoConceptoSolicitudServicio"];
+				$this->load->view("app/index",$salida);
+			}else{
+				$opc 				   = "home";
+				$salida['titulo']      = lang("titulo")." - Área Restringida";
+				$salida['centro'] 	   = "error/areaRestringida";
+				$this->load->view("app/index",$salida);
+			}
+		}else{
+			header('Location:'.base_url()."login");
+		}
+	}
+
+	//datos de suscriptor
+	public function misDatos($idModulo){
+		//valido que haya una sesión de usuario, si no existe siempre lo enviaré al login
+		if(validaIngreso()){
+			/*******************************************************************************************/
+			/* ESTA SECCIÓN DE CÓDIGO  ES MUY IMPORTANTE YA QUE ES LA QUE CONTROLARÁ EL MÓDULO VISITADO*/
+			/*******************************************************************************************/
+			//si no se declara está variable en cada inicio del módulo no se podrán consultar los privilegios
+			$_SESSION['moduloVisitado']		=	$idModulo;
+			//antes de pintar la plantilla del módulo valido si hay permisos de ver ese módulo para evitar que ingresen al módulo vía URL
+			if(getPrivilegios()[0]['ver'] == 1){
+
+				$idPersona = $_SESSION['project']["info"]["idPersona"];
+				//info Módulo
+				$infoModulo	      	   = $this->logica->infoModulo($idModulo);
+				$Datos	      	   	   = $this->logica->datos($idPersona);
+				// var_dump($Datos[0]);die();
+				$opc 				   = "home";
+				$salida['titulo']      = "Datos de usuario";
+				$salida['centro'] 	   = "oficinaVirtual/misDatos";
+				$salida['nombreModulo']= "Información de Cuenta";
+				$salida['Dato']		   = $Datos[0];
+				$salida['infoModulo']  = $infoModulo[0];
 				$this->load->view("app/index",$salida);
 			}else{
 				$opc 				   = "home";
